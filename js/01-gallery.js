@@ -38,9 +38,11 @@ function onImageClick(e) {
   const originalImg = e.target.dataset.source;
   console.log(originalImg);
 
-  const instance = basicLightbox.create(`
-      <img src="${originalImg}" width="800" height="600">
-  `);
+  const largeImage = `<img src="${originalImg}" width="800" height="600">`;
+  const instance = basicLightbox.create(largeImage, {
+    onShow: () => document.addEventListener('keydown', onModalClose),
+    onClose: () => document.removeEventListener('keydown', onModalClose),
+  });
 
   instance.show();
 
@@ -50,7 +52,6 @@ function onImageClick(e) {
   function onModalClose(e) {
     if (e.code === 'Escape') {
       instance.close();
-      removeEventListener('keydown', onModalClose);
     }
   }
 }
